@@ -73,6 +73,7 @@ class _AnaEkranState extends State<AnaEkran> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.all(50),
       child: Center(
         child: Column(
           children: <Widget>[
@@ -83,10 +84,16 @@ class _AnaEkranState extends State<AnaEkran> {
             TextField(
               controller: textSayi2,
             ),
-            ElevatedButton(onPressed: toplamaIslemi, child: Text("Topla")),
-            ElevatedButton(onPressed: cikarmaIslemi, child: Text("Çıkarma")),
-            ElevatedButton(onPressed: bolmeIslemi, child: Text("Bölme")),
-            ElevatedButton(onPressed: carpmaIslemi, child: Text("Çarpma")),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                ElevatedButton(onPressed: toplamaIslemi, child: Text("Topla")),
+                ElevatedButton(
+                    onPressed: cikarmaIslemi, child: Text("Çıkarma")),
+                ElevatedButton(onPressed: bolmeIslemi, child: Text("Bölme")),
+                ElevatedButton(onPressed: carpmaIslemi, child: Text("Çarpma")),
+              ],
+            )
           ],
         ),
       ),
