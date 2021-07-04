@@ -1,4 +1,3 @@
-import 'dart:html';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -7,7 +6,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Hesap Makinesi",
+      title: "Liste Uygulaması",
       home: Iskele(),
     );
   }
@@ -18,7 +17,7 @@ class Iskele extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Basit Hesap Makinesi"),
+        title: Text("Liste Çalışması"),
       ),
       body: AnaEkran(),
     );
@@ -31,42 +30,18 @@ class AnaEkran extends StatefulWidget {
 }
 
 class _AnaEkranState extends State<AnaEkran> {
-  num sayi1, sayi2, sonuc;
-  TextEditingController textSayi1 = TextEditingController();
-  TextEditingController textSayi2 = TextEditingController();
+  TextEditingController metinAlici = TextEditingController();
+  List alisverisListesi = [];
 
-  turDonusumu() {
+  listeyeEkle() {
     setState(() {
-      sayi1 = num.parse(textSayi1.text);
-      sayi2 = num.parse(textSayi2.text);
+      alisverisListesi.add(metinAlici.text);
     });
   }
 
-  toplamaIslemi() {
+  listedenCikar() {
     setState(() {
-      turDonusumu();
-      sonuc = sayi1 + sayi2;
-    });
-  }
-
-  cikarmaIslemi() {
-    setState(() {
-      turDonusumu();
-      sonuc = sayi1 - sayi2;
-    });
-  }
-
-  bolmeIslemi() {
-    setState(() {
-      turDonusumu();
-      sonuc = sayi1 / sayi2;
-    });
-  }
-
-  carpmaIslemi() {
-    setState(() {
-      turDonusumu();
-      sonuc = sayi1 * sayi2;
+      alisverisListesi.remove(metinAlici.text);
     });
   }
 
@@ -77,23 +52,20 @@ class _AnaEkranState extends State<AnaEkran> {
       child: Center(
         child: Column(
           children: <Widget>[
-            Text("$sonuc"),
+            Flexible(
+                child: ListView.builder(
+                    itemCount: alisverisListesi.length,
+                    itemBuilder: (context, indexNumarasi) => ListTile(
+                          title: Text(alisverisListesi[indexNumarasi]),
+                        ))),
             TextField(
-              controller: textSayi1,
+              controller: metinAlici,
             ),
-            TextField(
-              controller: textSayi2,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                ElevatedButton(onPressed: toplamaIslemi, child: Text("Topla")),
-                ElevatedButton(
-                    onPressed: cikarmaIslemi, child: Text("Çıkarma")),
-                ElevatedButton(onPressed: bolmeIslemi, child: Text("Bölme")),
-                ElevatedButton(onPressed: carpmaIslemi, child: Text("Çarpma")),
-              ],
-            )
+            ElevatedButton(
+                onPressed: listeyeEkle, child: Text("Listeye Nesne Ekleyin")),
+            ElevatedButton(
+                onPressed: listedenCikar,
+                child: Text("Listeden Nesne Çıkartın ")),
           ],
         ),
       ),
