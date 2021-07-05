@@ -6,7 +6,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Liste Uygulaması",
+      title: "Mesajlaşma Uygulaması",
       home: Iskele(),
     );
   }
@@ -17,7 +17,7 @@ class Iskele extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Liste Çalışması"),
+        title: Text("Mesajlaşma Arayüzü"),
       ),
       body: AnaEkran(),
     );
@@ -30,45 +30,85 @@ class AnaEkran extends StatefulWidget {
 }
 
 class _AnaEkranState extends State<AnaEkran> {
-  TextEditingController metinAlici = TextEditingController();
-  List alisverisListesi = [];
+  TextEditingController txtMesaj = TextEditingController();
+  List<MesajBalonu> mesajListesi = [];
 
-  listeyeEkle() {
+  listeyeEkle(String gelenMesaj) {
     setState(() {
-      alisverisListesi.add(metinAlici.text);
+      MesajBalonu mesajNesnesi = MesajBalonu(mesaj: gelenMesaj);
+      mesajListesi.insert(0, mesajNesnesi);
+      txtMesaj.clear();
     });
   }
 
-  listedenCikar() {
-    setState(() {
-      alisverisListesi.remove(metinAlici.text);
-    });
+  Widget sohbetKutusu() {
+    return Container(
+      child: Row(
+        children: <Widget>[
+          Flexible(
+            child: TextField(
+              onSubmitted: listeyeEkle,
+              controller: txtMesaj,
+            ),
+          ),
+          IconButton(
+            onPressed: () => listeyeEkle(txtMesaj.text),
+            icon: Icon(Icons.send),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(50),
+      margin: EdgeInsets.all(15),
       child: Center(
         child: Column(
           children: <Widget>[
             Flexible(
-                child: ListView.builder(
-                    itemCount: alisverisListesi.length,
-                    itemBuilder: (context, indexNumarasi) => ListTile(
-                          title: Text(alisverisListesi[indexNumarasi]),
-                        ))),
-            TextField(
-              controller: metinAlici,
+              child: ListView.builder(
+                  reverse: true,
+                  itemCount: mesajListesi.length,
+                  itemBuilder: (context, indexNumarasi) =>
+                      mesajListesi[indexNumarasi]),
             ),
-            ElevatedButton(
-                onPressed: listeyeEkle, child: Text("Listeye Nesne Ekleyin")),
-            ElevatedButton(
-                onPressed: listedenCikar,
-                child: Text("Listeden Nesne Çıkartın ")),
+            Divider(
+              thickness: 3,
+            ),
+            sohbetKutusu(),
           ],
         ),
       ),
     );
+  }
+}
+
+String isim = "Kullanici1";
+String mesaj;
+
+class MesajBalonu extends StatelessWidget {
+  String mesaj;
+
+  MesajBalonu({this.mesaj});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: EdgeInsets.symmetric(),
+        child: Row(
+          children: <Widget>[
+            CircleAvatar(
+              child: Text(isim[0]),
+            ),
+            Column(
+              children: <Widget>[
+                Text(isim),
+                Text(mesaj + "\n"),
+              ],
+            )
+          ],
+        ));
   }
 }
