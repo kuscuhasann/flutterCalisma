@@ -21,8 +21,13 @@ class GirisEkrani extends StatefulWidget {
 }
 
 class _GirisEkraniState extends State<GirisEkrani> {
+  TextEditingController txtKullaniciAdi = TextEditingController();
+  TextEditingController txtKullanciSifre = TextEditingController();
   profilEkraninaGider() {
-    Navigator.pushNamed(context, "/ProfilSayfasiRotasi");
+    Navigator.pushNamed(context, "/ProfilSayfasiRotasi",
+        arguments: VeriModeli(
+            kullaniciAdi: txtKullaniciAdi.text,
+            kullanciSifre: txtKullanciSifre.text));
   }
 
   @override
@@ -34,6 +39,12 @@ class _GirisEkraniState extends State<GirisEkrani> {
       body: Container(
         child: Column(
           children: <Widget>[
+            TextFormField(
+              controller: txtKullaniciAdi,
+            ),
+            TextFormField(
+              controller: txtKullanciSifre,
+            ),
             ElevatedButton(
                 onPressed: profilEkraninaGider,
                 child: Text("Profil Ekranına Geçmek için Basınız"))
@@ -56,13 +67,16 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
 
   @override
   Widget build(BuildContext context) {
+    VeriModeli gelenMesaj = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Giriş Ekranına Dönmek için tıklayınız"),
+        title: Text("Profil Ekranı"),
       ),
       body: Container(
         child: Column(
           children: <Widget>[
+            Text(
+                "Kullanıcı adı:  ${gelenMesaj.kullaniciAdi} \n Kullanıcı Sifre: ${gelenMesaj.kullanciSifre}"),
             ElevatedButton(
                 onPressed: girisEkraninaGit,
                 child: Text("Giriş Ekranına Gider"))
@@ -71,4 +85,9 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
       ),
     );
   }
+}
+
+class VeriModeli {
+  String kullaniciAdi, kullanciSifre;
+  VeriModeli({this.kullaniciAdi, this.kullanciSifre});
 }
